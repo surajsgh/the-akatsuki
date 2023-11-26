@@ -1,6 +1,6 @@
-import express, { Request, Response, NextFunction } from "express";
-import morgan from "morgan";
-import dotenv from "dotenv";
+import express, { Request, Response, NextFunction } from 'express';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
 
 dotenv.config({ path: `${__dirname}/../config.env` });
 
@@ -18,19 +18,19 @@ const app = express();
 app.use(express.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log("logging...");
+  console.log('logging...');
   next();
 });
 
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   req.requestTime = Date.now();
   next();
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Hello, world!" });
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Hello, world!' });
 });
 
 const PORT = 8000;
