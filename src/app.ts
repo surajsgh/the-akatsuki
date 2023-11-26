@@ -1,5 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
+import dotenv from "dotenv";
+
+dotenv.config({ path: `${__dirname}/../config.env` });
 
 declare global {
   namespace Express {
