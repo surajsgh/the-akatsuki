@@ -1,8 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: `${__dirname}/../config.env` });
 
 declare global {
   namespace Express {
@@ -33,8 +30,4 @@ app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Hello, world!' });
 });
 
-const PORT = 8000;
-
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
-});
+export default app;
