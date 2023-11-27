@@ -1,6 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 
+// eslint-disable-next-line import/no-unresolved, import/extensions
+import testRouter from './routes/testRoute';
+
 declare global {
   namespace Express {
     interface Request {
@@ -29,5 +32,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({ message: 'Hello, world!' });
 });
+
+app.use('/api/v1/test', testRouter);
 
 export default app;
