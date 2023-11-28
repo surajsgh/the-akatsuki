@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 
-// eslint-disable-next-line import/no-unresolved, import/extensions
-import testRouter from './routes/testRoute';
+import testRouter from './routes/testRoute.ts';
+import tourRouter from './routes/tourRoute.ts';
 
 declare global {
   namespace Express {
@@ -34,5 +34,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/v1/test', testRouter);
+app.use('/api/v1/tour', tourRouter);
 
 export default app;

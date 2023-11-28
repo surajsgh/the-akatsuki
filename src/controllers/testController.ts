@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-// eslint-disable-next-line import/no-unresolved, import/extensions
-import Test from '../models/testModel';
+import Test from '../models/testModel.ts';
 
 // eslint-disable-next-line import/prefer-default-export
 export const test = async (req: Request, res: Response): Promise<unknown> => {

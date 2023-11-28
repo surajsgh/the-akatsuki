@@ -26,6 +26,7 @@
     "class-methods-use-this": "off",
     "import/no-extraneous-dependencies": ["off"],
     "@typescript-eslint/no-namespace": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "consistent-return": "off"
   }
 }
