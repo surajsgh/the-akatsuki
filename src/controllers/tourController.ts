@@ -42,3 +42,23 @@ export const createTour = async (req: Request, res: Response) => {
     return res.status(400).json({ error: true, message: error.message });
   }
 };
+
+export const getTours = async (req: Request, res: Response) => {
+  try {
+    const tours = await Tour.find();
+    return res.status(200).json({ error: false, tours });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+};
+
+export const getTour = async (req: Request, res: Response) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    return res.status(200).json({ error: false, tour });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+};
