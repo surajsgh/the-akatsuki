@@ -74,7 +74,21 @@ export const updateTour = async (req: Request, res: Response) => {
       runValidators: true,
     });
 
-    return res.status(200).json({ error: false, tour });
+    return res
+      .status(200)
+      .json({ error: false, tour, message: 'Tour updated successfully.' });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+};
+
+export const deleteTour = async (req: Request, res: Response) => {
+  try {
+    const tour = await Tour.findByIdAndDelete(req.params.id);
+    return res
+      .status(200)
+      .json({ error: false, tour, message: 'Tour deleted successfully.' });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return res.status(400).json({ error: true, message: error.message });
