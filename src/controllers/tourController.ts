@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import mongoose from 'mongoose';
+
 import Tour from '../models/tourModel.ts';
 
 export const checkBody = (req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +35,34 @@ export const checkBody = (req: Request, res: Response, next: NextFunction) => {
   }
 
   next();
+};
+
+export const checkId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  val: string,
+) => {
+  try {
+    const {
+      Types: { ObjectId },
+    } = mongoose;
+
+    const validObjectId =
+      ObjectId.isValid(val) && new ObjectId(val).toString() === val;
+
+    if (!validObjectId) {
+      return res.status(400).json({
+        error: true,
+        message: 'Invalid ObjectId',
+      });
+    }
+
+    next();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
 };
 
 export const createTour = async (req: Request, res: Response) => {

@@ -6,9 +6,12 @@ import {
   getTour,
   updateTour,
   deleteTour,
+  checkId,
 } from '../controllers/tourController.ts';
 
 const tourRouter = express.Router();
+
+tourRouter.param('id', checkId);
 
 tourRouter.route('/').post(checkBody, createTour).get(getTours);
 
