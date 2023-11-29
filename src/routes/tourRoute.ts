@@ -4,12 +4,13 @@ import {
   createTour,
   getTours,
   getTour,
+  updateTour,
 } from '../controllers/tourController.ts';
 
 const tourRouter = express.Router();
 
 tourRouter.route('/').post(checkBody, createTour).get(getTours);
 
-tourRouter.route('/:id').get(getTour);
+tourRouter.route('/:id').get(getTour).put(checkBody, updateTour);
 
 export default tourRouter;

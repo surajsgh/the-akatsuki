@@ -4,16 +4,16 @@ import Tour from '../models/tourModel.ts';
 export const checkBody = (req: Request, res: Response, next: NextFunction) => {
   const { hotels, tourGuide, places, price } = req.body;
 
-  if (!+price || +price < 0) {
+  if (price && (!+price || +price < 0)) {
     return res
       .status(400)
       .json({ error: true, message: 'Price must be a positive number.' });
   }
 
   if (
-    !Array.isArray(hotels) ||
-    !Array.isArray(tourGuide) ||
-    !Array.isArray(places)
+    (hotels && !Array.isArray(hotels)) ||
+    (tourGuide && !Array.isArray(tourGuide)) ||
+    (places && !Array.isArray(places))
   ) {
     return res.status(400).json({
       error: true,
@@ -21,7 +21,11 @@ export const checkBody = (req: Request, res: Response, next: NextFunction) => {
     });
   }
 
-  if (!hotels.length || !tourGuide.length || !places.length) {
+  if (
+    (hotels && !hotels.length) ||
+    (tourGuide && !tourGuide.length) ||
+    (places && !places.length)
+  ) {
     return res.status(400).json({
       error: true,
       message: 'All fields are required.',
@@ -56,6 +60,20 @@ export const getTours = async (req: Request, res: Response) => {
 export const getTour = async (req: Request, res: Response) => {
   try {
     const tour = await Tour.findById(req.params.id);
+    return res.status(200).json({ error: false, tour });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return res.status(400).json({ error: true, message: error.message });
+  }
+};
+
+export const updateTour = async (req: Request, res: Response) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
     return res.status(200).json({ error: false, tour });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
