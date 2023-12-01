@@ -79,10 +79,34 @@ export const createTour = async (req: Request, res: Response) => {
 
 export const getTours = async (req: Request, res: Response) => {
   try {
-    const tours = await Tour.find();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let query: any = Tour.find(req.query);
+
+    if (req.query.sort) {
+      const queryBy = req.query.sort.toString().split(',').join(' ');
+      query = query.sort(queryBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    if (req.query.fields) {
+      const queryBy = req.query.fields.toString().split(',').join(' ');
+      query = query.select(`${queryBy}`);
+    } else {
+      query = query.select('-__v');
+    }
+
+    const page = Number(req.query.page) * 1 || 1;
+    const limit = Number(req.query.limit) * 1 || 10;
+    const skip = (page - 1) * limit;
+
+    query = query.skip(skip).limit(limit);
+
+    const tours = await query;
     return res.status(200).json({ error: false, tours });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
+    console.log(error);
     return res.status(400).json({ error: true, message: error.message });
   }
 };
