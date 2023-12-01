@@ -65,6 +65,17 @@ export const checkId = async (
   }
 };
 
+export const topTours = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  req.query.limit = '5';
+  req.query.sort = '-createdAt, price';
+  req.query.fields = 'name, price, description, duration, createdAt';
+  next();
+};
+
 export const createTour = async (req: Request, res: Response) => {
   try {
     const tour = await Tour.create(req.body);
@@ -106,7 +117,6 @@ export const getTours = async (req: Request, res: Response) => {
     return res.status(200).json({ error: false, tours });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error);
     return res.status(400).json({ error: true, message: error.message });
   }
 };
