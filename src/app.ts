@@ -36,4 +36,8 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/v1/test', testRouter);
 app.use('/api/v1/tour', tourRouter);
 
+app.all('*', (req: Request, res: Response) =>
+  res.status(404).json({ error: true, message: 'URL not found!' }),
+);
+
 export default app;
