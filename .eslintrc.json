@@ -27,6 +27,7 @@
     "import/no-extraneous-dependencies": ["off"],
     "@typescript-eslint/no-namespace": "off",
     "no-shadow": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-explicit-any": "off"
   }
 }
