@@ -12,7 +12,7 @@ import {
 
 const tourRouter = express.Router();
 
-tourRouter.param('id', checkId);
+// tourRouter.param('id', checkId);
 
 tourRouter.route('/').post(checkBody, createTour).get(getTours);
 

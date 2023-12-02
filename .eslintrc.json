@@ -18,7 +18,8 @@
   "ignorePatterns": ["dist"],
   "rules": {
     "prettier/prettier": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "off",
     "func-names": "off",
     "no-process-exit": "off",
@@ -29,6 +30,7 @@
     "no-shadow": "off",
     "consistent-return": "off",
     "no-explicit-any": "off",
-    "lines-between-class-members": "off"
+    "lines-between-class-members": "off",
+    "@typescript-eslint/ban-types": "warn"
   }
 }
