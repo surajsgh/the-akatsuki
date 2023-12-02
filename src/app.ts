@@ -3,6 +3,8 @@ import morgan from 'morgan';
 
 import testRouter from './routes/testRoute.ts';
 import tourRouter from './routes/tourRoute.ts';
+import AppError from './utils/appError.ts';
+import errorHandler from './controllers/errorController.ts';
 
 declare global {
   namespace Express {
@@ -36,32 +38,10 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/v1/test', testRouter);
 app.use('/api/v1/tour', tourRouter);
 
-interface ExtendedError extends Error {
-  status?: string;
-  statusCode?: number;
-}
-
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
-  const error: ExtendedError = new Error(
-    `Requested URL ${req.originalUrl} not found!`,
-  );
-
-  error.statusCode = 404;
-  error.status = 'Fail';
-
-  console.log('Test');
-
-  next(error);
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-app.use(
-  (error: ExtendedError, req: Request, res: Response, next: NextFunction) => {
-    res.status(error.statusCode || 500).json({
-      error: true,
-      status: error.status,
-      message: error.message,
-    });
-  },
-);
+app.use(errorHandler);
 
 export default app;
