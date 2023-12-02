@@ -4,6 +4,12 @@ import dotenv from 'dotenv';
 import app from './app.ts';
 import { ExtendedError } from './controllers/errorController.ts';
 
+process.on('uncaughtException', (error) => {
+  console.log('Unhandled exception, shutting down...');
+  console.log(error);
+  process.exit(1);
+});
+
 dotenv.config({ path: `${__dirname}/../config.env` });
 
 const DB = process.env.DATABASE?.replace('<PASSWORD>', process.env.PASSWORD!);
