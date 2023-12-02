@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import Tour from '../models/tourModel.ts';
 import catchAsync from '../utils/catchAsync.ts';
+import AppError from '../utils/appError.ts';
 
 export const checkBody = (req: Request, res: Response, next: NextFunction) => {
   const { hotels, tourGuide, places, price } = req.body;
@@ -48,10 +49,7 @@ export const checkId = catchAsync(
       ObjectId.isValid(val) && new ObjectId(val).toString() === val;
 
     if (!validObjectId) {
-      return res.status(400).json({
-        error: true,
-        message: 'Invalid ObjectId',
-      });
+      return next(new AppError('Invalid object id', 404));
     }
 
     next();
