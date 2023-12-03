@@ -5,7 +5,7 @@ import testRouter from './routes/testRoute.ts';
 import tourRouter from './routes/tourRoute.ts';
 import AppError from './utils/appError.ts';
 import errorHandler from './controllers/errorController.ts';
-import userRouter from './routes/userRouter.ts';
+import authRouter from './routes/authRouter.ts';
 
 declare global {
   namespace Express {
@@ -38,7 +38,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/v1/test', testRouter);
 app.use('/api/v1/tour', tourRouter);
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

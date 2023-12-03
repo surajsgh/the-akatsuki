@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 import isEmail from 'validator/lib/isEmail';
 
 const userSchema = new mongoose.Schema({
@@ -22,20 +23,28 @@ const userSchema = new mongoose.Schema({
     minLength: 8,
     maxLength: 15,
   },
-  passwordConfirmation: {
-    type: String,
-    required: [true, 'A user must confirm their password.'],
-    trim: true,
-    minLength: 8,
-    maxLength: 15,
-    validate: function (value: string) {
-      return this.password === value;
-    },
-  },
+  // passwordConfirmation: {
+  //   type: String,
+  //   required: [true, 'A user must confirm their password.'],
+  //   trim: true,
+  //   minLength: 8,
+  //   maxLength: 15,
+  //   validate: function (value: string) {
+  //     return this.password === value;
+  //   },
+  // },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+});
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) next();
+
+  this.password = await bcrypt.hash(this.password, 12);
+
+  next();
 });
 
 const User = mongoose.model('User', userSchema);
