@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
+import helmet from 'helmet';
 
 import testRouter from './routes/testRoute.ts';
 import tourRouter from './routes/tourRoute.ts';
@@ -19,7 +20,8 @@ declare global {
 const app = express();
 
 //  MIDDLEWARES
-app.use(express.json());
+app.use(helmet());
+app.use(express.json({ limit: ' 10kb ' }));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log('logging...');
