@@ -8,7 +8,8 @@ import catchAsync from '../utils/catchAsync.ts';
 import AppError from '../utils/appError.ts';
 
 interface ExtendedRequest extends Request {
-  user?: object;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  user?: any;
 }
 
 const getToken = (id: Types.ObjectId): string =>
@@ -72,9 +73,22 @@ export const protect = catchAsync(
       const user = await User.findById(id);
 
       if (!user) return next(new AppError(`User doesn't exist.`, 404));
-
       req.user = user;
       next();
     });
   },
 );
+
+// eslint-disable-next-line no-unused-expressions
+export const restrictTo = (
+  req: ExtendedRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (req.user.type !== 'admin')
+    return next(
+      new AppError('You are not authorized to access this route.', 403),
+    );
+
+  next();
+};
