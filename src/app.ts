@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
 import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 import testRouter from './routes/testRoute.ts';
 import tourRouter from './routes/tourRoute.ts';
@@ -22,6 +23,8 @@ const app = express();
 //  MIDDLEWARES
 app.use(helmet());
 app.use(express.json({ limit: ' 10kb ' }));
+
+app.use(mongoSanitize);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log('logging...');
