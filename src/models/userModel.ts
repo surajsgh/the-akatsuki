@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A user must confirm their password.'],
     trim: true,
+    minLength: 8,
+    maxLength: 15,
+    validate: function (value: string) {
+      return this.password === value;
+    },
   },
   createdAt: {
     type: Date,
