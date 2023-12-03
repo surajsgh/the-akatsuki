@@ -9,12 +9,13 @@ import {
   checkId,
   topTours,
 } from '../controllers/tourController.ts';
+import { protect } from '../controllers/authController.ts';
 
 const tourRouter = express.Router();
 
 // tourRouter.param('id', checkId);
 
-tourRouter.route('/').post(checkBody, createTour).get(getTours);
+tourRouter.route('/').post(checkBody, createTour).get(protect, getTours);
 
 tourRouter.route('/topFiveTours').get(topTours, getTours);
 

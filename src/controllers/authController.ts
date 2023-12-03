@@ -7,6 +7,10 @@ import User from '../models/userModel.ts';
 import catchAsync from '../utils/catchAsync.ts';
 import AppError from '../utils/appError.ts';
 
+interface ExtendedRequest extends Request {
+  user?: object;
+}
+
 const getToken = (id: Types.ObjectId): string =>
   jwt.sign({ id }, process.env.SECRET_KEY!, {
     expiresIn: process.env.EXPIRES_IN,
@@ -45,6 +49,32 @@ export const login = catchAsync(
       error: true,
       message: 'You have logged in successfully.',
       token,
+    });
+  },
+);
+
+export const protect = catchAsync(
+  async (req: ExtendedRequest, res: Response, next: NextFunction) => {
+    const token =
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer ')
+        ? req.headers.authorization.split('Bearer ')[1].trim()
+        : '';
+
+    if (!token) return next(new AppError('You are not logged in.', 401));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt.verify(token, process.env.SECRET_KEY!, async (err, decoded: any) => {
+      if (err) return next(new AppError('Invalid token.', 401));
+
+      const { id } = decoded;
+
+      const user = await User.findById(id);
+
+      if (!user) return next(new AppError(`User doesn't exist.`, 404));
+
+      req.user = user;
+      next();
     });
   },
 );
