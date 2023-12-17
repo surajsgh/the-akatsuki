@@ -21,9 +21,12 @@ declare global {
 const app = express();
 
 //  MIDDLEWARES
+
+//  SETTING VARIOUS HTTP HEADERS FOR SECURITY
 app.use(helmet());
 app.use(express.json({ limit: ' 10kb ' }));
 
+//  DATA SANITIZATION FOR SECURITY AGAINST NOSQL INJECTION
 app.use(mongoSanitize);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +36,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(morgan('dev'));
 
+//  RATE LIMIT
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
